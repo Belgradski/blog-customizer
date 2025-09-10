@@ -8,9 +8,18 @@ import styles from './ArticleParamsForm.module.scss';
 import {
 	ArticleStateType,
 	defaultArticleState,
+	OptionType,
+	backgroundColors,
+	contentWidthArr,
+	fontColors,
+	fontFamilyOptions,
+	fontSizeOptions,
 } from '../../constants/articleProps';
 
 import { useState, FormEvent } from 'react';
+import { Select } from 'src/ui/select';
+import { RadioGroup } from 'src/ui/radio-group';
+import { Separator } from 'src/ui/separator';
 
 export type ArticleParamsFormProps = {
 	setAppState: (value: ArticleStateType) => void;
@@ -34,6 +43,14 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		setFormState(defaultArticleState);
 		setAppState(formState);
 	};
+	const handleChange = (fieldName: string) => {
+		return (value: OptionType) => {
+			setFormState((currentFormState) => ({
+				...currentFormState,
+				[fieldName]: value,
+			}));
+		};
+	};
 
 	return (
 		<>
@@ -53,6 +70,38 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 					<Text uppercase={true} weight={800} size={31}>
 						Задайте параметры
 					</Text>
+					<Select
+						title='Шрифт'
+						selected={formState.fontFamilyOption}
+						options={fontFamilyOptions}
+						onChange={handleChange('fontFamilyOptions')}
+					/>
+					<RadioGroup
+						title='Размер шрифта'
+						name='fontSizeOption'
+						selected={formState.fontSizeOption}
+						options={fontSizeOptions}
+						onChange={handleChange('fontSizeOption')}
+					/>
+					<Select
+						title='Цвет шрифта'
+						selected={formState.fontColor}
+						options={fontColors}
+						onChange={handleChange('fontColor')}
+					/>
+					<Separator />
+					<Select
+						title='Цвет фона'
+						selected={formState.backgroundColor}
+						options={backgroundColors}
+						onChange={handleChange('backgroundColor')}
+					/>
+					<Select
+						title='Ширина контента'
+						selected={formState.contentWidth}
+						options={contentWidthArr}
+						onChange={handleChange('ContentWidth')}
+					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
 						<Button title='Применить' htmlType='submit' type='apply' />
