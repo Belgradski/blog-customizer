@@ -16,10 +16,11 @@ import {
 	fontSizeOptions,
 } from '../../constants/articleProps';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useRef } from 'react';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 
 export type ArticleParamsFormProps = {
 	setAppState: (value: ArticleStateType) => void;
@@ -32,6 +33,15 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 
 	const [formState, setFormState] =
 		useState<ArticleStateType>(defaultArticleState);
+
+	const asideRef = useRef<HTMLDivElement>(null);
+
+	useOutsideClickClose({
+		isOpen: isMenuOpened,
+		rootRef: asideRef,
+		onChange: setIsMenuOpened,
+		onClose: () => setIsMenuOpened(false),
+	});
 
 	const handleChange = (fieldName: string) => {
 		return (value: OptionType) => {
@@ -62,12 +72,12 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 				}
 			/>
 			<div
-				onClick={() => setIsMenuOpened(false)}
 				className={clsx(
 					styles.overlay,
 					isMenuOpened && styles.overlay_open
 				)}></div>
 			<aside
+				ref={asideRef}
 				className={clsx(
 					styles.container,
 					isMenuOpened && styles.container_open
