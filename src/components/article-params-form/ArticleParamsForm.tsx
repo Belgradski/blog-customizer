@@ -28,7 +28,7 @@ export type ArticleParamsFormProps = {
 export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const { setAppState } = props;
 
-	const [isOpened, setIsOpened] = useState<boolean>(false);
+	const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
 	const [formState, setFormState] =
 		useState<ArticleStateType>(defaultArticleState);
@@ -56,14 +56,22 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	return (
 		<>
 			<ArrowButton
-				isOpen={isOpened}
-				onClick={() => setIsOpened((currentIsOpened) => !currentIsOpened)}
+				isOpen={isMenuOpened}
+				onClick={() =>
+					setIsMenuOpened((currentIsMenuOpened) => !currentIsMenuOpened)
+				}
 			/>
 			<div
-				onClick={() => setIsOpened(false)}
-				className={clsx(styles.overlay, isOpened && styles.overlay_open)}></div>
+				onClick={() => setIsMenuOpened(false)}
+				className={clsx(
+					styles.overlay,
+					isMenuOpened && styles.overlay_open
+				)}></div>
 			<aside
-				className={clsx(styles.container, isOpened && styles.container_open)}>
+				className={clsx(
+					styles.container,
+					isMenuOpened && styles.container_open
+				)}>
 				<form
 					onSubmit={handleSubmit}
 					onReset={handleReset}
